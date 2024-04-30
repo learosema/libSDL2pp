@@ -16,13 +16,19 @@ if(CMAKE_SOURCE_DIR STREQUAL PROJECT_SOURCE_DIR)
 	option(SDL2PP_WITH_TESTS "Build tests" ON)
 	option(SDL2PP_ENABLE_LIVE_TESTS "Enable live tests (require X11 display and audio device)" ON)
 	option(SDL2PP_STATIC "Build static library instead of shared one" OFF)
+	option(SDL2_STATIC "Link against SDL2::SDL2-static rather than SDL2::SDL2" OFF)	
 else()
 	# please set SDL2PP_WITH_IMAGE, SDL2PP_WITH_TTF, SDL2PP_WITH_MIXER in parent project as needed
 endif()
 
 # depends
 find_package(SDL2 REQUIRED)
-set(SDL2_ALL_LIBRARIES SDL2::SDL2)
+
+if(SDL2_STATIC)
+	set(SDL2_ALL_LIBRARIES SDL2::SDL2-static)
+else()
+	set(SDL2_ALL_LIBRARIES SDL2::SDL2)
+endif()
 set(SDL2_ALL_PKGCONFIG_MODULES sdl2)
 
 if(TARGET SDL2::SDL2main)
